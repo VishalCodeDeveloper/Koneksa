@@ -66,7 +66,7 @@ exports.handler = async function ({ event: body, constants, triggers }, context,
                 fieldAllowedValueDetails = JSON.parse(testValueObject);
                 if (i == 0) {
                     var currentFieldValues = fieldAllowedValueDetails.find(({ label }) => label.toLowerCase() === 'type');
-                    var currentValue = currentFieldValues.allowed_values.find(({ label }) => label.toLowerCase() === 'jest automation');
+                    var currentValue = currentFieldValues.allowed_values.find(({ label }) => label.toLowerCase() === 'cucumber automation');
                     field = {
                         field_id: currentFieldValues.id,
                         field_value: currentValue.value,
@@ -126,7 +126,7 @@ exports.handler = async function ({ event: body, constants, triggers }, context,
                             });
                             field = {
                                 field_id: currentFieldValues.id,
-                                field_value: currentValue,
+                                field_value: JSON.stringify(currentValue),
                             };
                             if (i == 0) {
                                 properties.push(field);
@@ -154,7 +154,7 @@ exports.handler = async function ({ event: body, constants, triggers }, context,
 
     testResults.forEach(function (feature) {
         var featureName = feature.name;
-        var parentFolder = feature.uri.split('/Features/')[1].split('/')[0];
+        var parentFolder = feature.uri.split('/Features/')[1].split('/');
         feature.elements.forEach(function (testCase) {
             if (testCase.skipped) {
                 return;
@@ -176,7 +176,7 @@ exports.handler = async function ({ event: body, constants, triggers }, context,
                 exe_end_date: new Date(),
                 properties: runProperties,
                 module_names: [
-                    parentFolder,
+                    ...parentFolder,
                     featureName.replace('&', 'and')
                 ],
                 Type: 'Cucumber Automation',
