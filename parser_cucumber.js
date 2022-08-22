@@ -154,7 +154,7 @@ exports.handler = async function ({ event: body, constants, triggers }, context,
 
     testResults.forEach(function (feature) {
         var featureName = feature.name;
-        var parentFolder = feature.uri.split('/Features/')[1].split('/')[0];
+        var parentFolder = feature.uri.split('/Features/')[1].split('/');
         feature.elements.forEach(function (testCase) {
             if (testCase.skipped) {
                 return;
@@ -176,7 +176,7 @@ exports.handler = async function ({ event: body, constants, triggers }, context,
                 exe_end_date: new Date(),
                 properties: runProperties,
                 module_names: [
-                    parentFolder,
+                    ...parentFolder,
                     featureName.replace('&', 'and')
                 ],
                 Type: 'Cucumber Automation',
